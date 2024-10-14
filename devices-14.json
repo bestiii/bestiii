@@ -1,0 +1,23 @@
+[
+	{
+		"name": "Rtr1-Prne",
+		"os": "ios",
+		"ip": "10.50.100.1",
+		"user": "prne",
+		"password": "cisco"
+	},
+	{
+		"name": "Rtr2-Prne",
+		"os": "ios",
+		"ip": "203.0.113.1",
+		"user": "prne",
+		"password": "cisco"
+	},
+	{
+		"name": "Rtr3-Prne",
+		"os": "ios",
+		"ip": "198.51.100.1",
+		"user": "prne",
+		"password": "cisco"
+	}
+]
