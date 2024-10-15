@@ -1,12 +1,13 @@
 # Import required modules/packages/library
 import pexpect
+import os
 
 # Define variables
 ip_address = "192.168.56.101"
 username = "cisco"
 password = "cisco123!"
 new_hostname = "IssaqM"  # Define the new hostname
-config_file = "running_config.txt"  # Local file to save the running configuration
+config_file = os.path.expanduser("~/Desktop/running_config.txt")  # Save to Desktop
 
 # Create telnet session
 session = pexpect.spawn("telnet " + ip_address, encoding="utf-8")
@@ -59,20 +60,18 @@ if result != 0:
 
 # Send command to show the running configuration
 session.sendline("show running-config")
-result = session.expect(["#", pexpect.TIMEOUT], timeout=30)  # Increase timeout to 30 seconds
+result = session.expect(["#", pexpect.TIMEOUT], timeout=20)
 
 # Check if the command was successful
 if result != 0:
     print("--- FAILURE! retrieving running configuration")
-    print("--- Debug: Output so far ---")
-    print(session.before)  # Display the output up to this point for debugging
 else:
     # Capture the output of the running configuration
     running_config = session.before
     # Display the running configuration
     print("--- Running Configuration ---")
     print(running_config)
-    # Save the output to a local file in the current directory
+    # Save the output to a local file
     with open(config_file, "w") as file:
         file.write(running_config)
     print(f"--- Success! Running configuration saved to {config_file}")
