@@ -50,37 +50,31 @@ else:
 
 # Exit configuration mode to return to privileged EXEC mode
 session.sendline("end")
-result = session.expect(["#", pexpect.TIMEOUT])
-
-# Check if exiting configuration mode was successful
-if result != 0:
-    print("--- FAILURE! exiting configuration mode")
-    exit()
+session.expect(["#", pexpect.TIMEOUT])
 
 # Send command to show the running configuration
 session.sendline("show running-config")
-result = session.expect(["#", pexpect.TIMEOUT], timeout=20)  # Increase timeout to 20 seconds
+result = session.expect(["#", pexpect.TIMEOUT], timeout=30)
 
 # Check if the command was successful
 if result != 0:
     print("--- FAILURE! retrieving running configuration")
-    print("--- Debug: Output so far ---")
-    print(session.before)  # Display the output up to this point for debugging
 else:
     # Capture the output of the running configuration
     running_config = session.before
-    # Display the running configuration
-    print("--- Running Configuration ---")
-    print(running_config)
     # Save the output to a local file
     with open(config_file, "w") as file:
         file.write(running_config)
     print(f"--- Success! Running configuration saved to {config_file}")
 
-# Display a final success message
+# Close the session
+session.sendline("exit")
+print("--- Connection closed ---")
+
+# Display the final success message
 print("------------------------------------------------------")
 print("")
-print("--- Success! connecting to:", ip_address)
+print("--- Success! Connecting to:", ip_address)
 print("    Username:", username)
 print("    Password:", password)
 print(f"    New Hostname: {new_hostname}")
