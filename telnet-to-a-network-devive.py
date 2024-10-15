@@ -59,11 +59,13 @@ if result != 0:
 
 # Send command to show the running configuration
 session.sendline("show running-config")
-result = session.expect(["#", pexpect.TIMEOUT], timeout=20)
+result = session.expect(["#", pexpect.TIMEOUT], timeout=30)  # Increase timeout to 30 seconds
 
 # Check if the command was successful
 if result != 0:
     print("--- FAILURE! retrieving running configuration")
+    print("--- Debug: Output so far ---")
+    print(session.before)  # Display the output up to this point for debugging
 else:
     # Capture the output of the running configuration
     running_config = session.before
