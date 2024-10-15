@@ -1,4 +1,4 @@
-import os
+# Import required modules/packages/library
 import pexpect
 
 # Define variables
@@ -59,20 +59,18 @@ if result != 0:
 
 # Send command to show the running configuration
 session.sendline("show running-config")
-result = session.expect(["#", pexpect.TIMEOUT], timeout=20)  # Increase timeout to 20 seconds
+result = session.expect(["#", pexpect.TIMEOUT], timeout=20)
 
 # Check if the command was successful
 if result != 0:
     print("--- FAILURE! retrieving running configuration")
-    print("--- Debug: Output so far ---")
-    print(session.before)  # Display the output up to this point for debugging
 else:
     # Capture the output of the running configuration
     running_config = session.before
     # Display the running configuration
     print("--- Running Configuration ---")
     print(running_config)
-    # Save the output to a local file
+    # Save the output to a local file in the current directory
     with open(config_file, "w") as file:
         file.write(running_config)
     print(f"--- Success! Running configuration saved to {config_file}")
