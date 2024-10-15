@@ -1,4 +1,4 @@
-# Import required modules/packages/library
+import os
 import pexpect
 
 # Define variables
@@ -6,7 +6,7 @@ ip_address = "192.168.56.101"
 username = "cisco"
 password = "cisco123!"
 new_hostname = "IssaqM"  # Define the new hostname
-config_file = "running_config.txt"  # Local file to save the running configuration
+config_file = os.path.join(os.getcwd(), "running_config.txt")  # Save file to the current working directory
 
 # Create telnet session
 session = pexpect.spawn("telnet " + ip_address, encoding="utf-8")
@@ -73,9 +73,12 @@ else:
     print("--- Running Configuration ---")
     print(running_config)
     # Save the output to a local file
-    with open(config_file, "w") as file:
-        file.write(running_config)
-    print(f"--- Success! Running configuration saved to {config_file}")
+    try:
+        with open(config_file, "w") as file:
+            file.write(running_config)
+        print(f"--- Success! Running configuration saved to {config_file}")
+    except Exception as e:
+        print(f"--- FAILURE! Could not save the file: {e}")
 
 # Display a final success message
 print("------------------------------------------------------")
