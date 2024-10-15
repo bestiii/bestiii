@@ -15,6 +15,7 @@ result = session.expect(["Username:", pexpect.TIMEOUT])
 # Check for error, if exists then display error and exit
 if result != 0:
     print("--- FAILURE! creating session for:", ip_address)
+    exit()
 
 # Session is expecting username, enter details
 session.sendline(username)
@@ -23,6 +24,7 @@ result = session.expect(["Password:", pexpect.TIMEOUT])
 # Check for error, if exists then display error and exit
 if result != 0:
     print("--- FAILURE! entering username:", username)
+    exit()
 
 # Session is expecting password, enter details
 session.sendline(password)
@@ -31,6 +33,7 @@ result = session.expect(["#", pexpect.TIMEOUT])
 # Check for error, if exists then display error and exit
 if result != 0:
     print("--- FAILURE! entering password:", password)
+    exit()
 
 # Change the hostname of the device to "IssaqM"
 # Enter configuration mode and set the new hostname
@@ -52,14 +55,17 @@ result = session.expect(["#", pexpect.TIMEOUT])
 # Check if exiting configuration mode was successful
 if result != 0:
     print("--- FAILURE! exiting configuration mode")
+    exit()
 
 # Send command to show the running configuration
 session.sendline("show running-config")
-result = session.expect(["#", pexpect.TIMEOUT], timeout=10)
+result = session.expect(["#", pexpect.TIMEOUT], timeout=20)  # Increase timeout to 20 seconds
 
 # Check if the command was successful
 if result != 0:
     print("--- FAILURE! retrieving running configuration")
+    print("--- Debug: Output so far ---")
+    print(session.before)  # Display the output up to this point for debugging
 else:
     # Capture the output of the running configuration
     running_config = session.before
