@@ -45,6 +45,14 @@ if result != 0:
 else:
     print(f"--- Success! Hostname changed to {new_hostname}")
 
+# Exit configuration mode to return to privileged EXEC mode
+session.sendline("end")
+result = session.expect(["#", pexpect.TIMEOUT])
+
+# Check if exiting configuration mode was successful
+if result != 0:
+    print("--- FAILURE! exiting configuration mode")
+
 # Send command to show the running configuration
 session.sendline("show running-config")
 result = session.expect(["#", pexpect.TIMEOUT], timeout=10)
