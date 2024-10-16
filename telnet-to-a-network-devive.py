@@ -6,7 +6,6 @@ ip_address = "192.168.56.101"
 username = "cisco"
 password = "cisco123!"
 new_hostname = "IssaqM"  # Define the new hostname
-config_file = "running_config.txt"  # Local file to save the running configuration
 
 # Create telnet session
 session = pexpect.spawn("telnet " + ip_address, encoding="utf-8")
@@ -50,33 +49,17 @@ else:
 
 # Exit configuration mode to return to privileged EXEC mode
 session.sendline("end")
-session.expect(["#", pexpect.TIMEOUT])
+result = session.expect(["#", pexpect.TIMEOUT])
 
-# Send command to show the running configuration
-session.sendline("show running-config")
-result = session.expect(["#", pexpect.TIMEOUT], timeout=30)
-
-# Check if the command was successful
-if result != 0:
-    print("--- FAILURE! retrieving running configuration")
-else:
-    # Capture the output of the running configuration
-    running_config = session.before
-    # Save the output to a local file
-    with open(config_file, "w") as file:
-        file.write(running_config)
-    print(f"--- Success! Running configuration saved to {config_file}")
-
-# Close the session
-session.sendline("exit")
-print("--- Connection closed ---")
-
-# Display the final success message
+# Display a final success message
 print("------------------------------------------------------")
 print("")
 print("--- Success! Connecting to:", ip_address)
 print("    Username:", username)
 print("    Password:", password)
 print(f"    New Hostname: {new_hostname}")
-print(f"    Running configuration saved to: {config_file}")
 print("------------------------------------------------------")
+
+# Close the session
+session.sendline("exit")
+print("--- Connection closed ---")
