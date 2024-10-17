@@ -77,4 +77,5 @@ print("--- Success! Connecting to:", ip_address)
 print("    Username:", username)
 print("    Password:", password)
 print(f"    New Hostname: {new_hostname}")
-print(f"    Running configuration
+print(f"    Running configuration saved to: {config_file}")
+print("------------------------------------------------------")
