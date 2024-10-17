@@ -21,7 +21,7 @@ try:
     # Enter enable mode
     connection.enable()
 
-    # Change the hostname to "Hayes.Router"
+    # Change the hostname to "Hayes'Router"
     connection.send_config_set([f'hostname {new_hostname}'])
 
     # Verify the hostname change
