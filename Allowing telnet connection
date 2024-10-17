@@ -5,7 +5,7 @@ import pexpect
 ip_address = "192.168.56.101"
 username = "cisco"
 password = "cisco123!"
-new_hostname = "IssaqM"  # Define the new hostname
+new_hostname = "Hayes.Router"  # Define the new hostname
 config_file = "running_config.txt"  # Local file to save the running configuration
 
 # Create telnet session
@@ -71,14 +71,14 @@ else:
     print(f"--- Success! Running configuration saved to {config_file}")
 
 # Display a final success message
-print("------------------------------------------------------------------")
+print("(------------------------------------------------------------------")
 print("")
 print(f"---               Success! Connecting to: {ip_address}")
 print(f"                                  Username: {username}")
 print(f"                                  Password: {password}")
 print(f"                          New Hostname: {new_hostname}")
 print(f"         Running configuration saved to: {config_file}")
-print("------------------------------------------------------------------")
+print("------------------------------------------------------------------)")
 
 # Terminate telnet to device and close session
 session.sendline('quit')
