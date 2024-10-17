@@ -60,15 +60,6 @@ print("    Password:", password)
 print(f"    New Hostname: {new_hostname}")
 print("------------------------------------------------------")
 
-# Close the session
-session.sendline("exit")
-print("--- Connection closed ---")
-
-c = pexpect.spawn('connection stuff')
-#login happening here
-c.expect('#')
-c.sendline('\n')
-c.expect('#')
-h = c.before 
-hostname = h.lstrip()
-print "Connected to " + hostname
+# Terminate telnet to device and close session
+session.sendline('quit')
+session.close()
