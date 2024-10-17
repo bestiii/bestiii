@@ -1,0 +1,51 @@
+# Import required modules/packages/library
+from netmiko import ConnectHandler
+
+# Define the device details
+device = {
+    'device_type': 'cisco_ios',
+    'ip': '192.168.56.101',
+    'username': 'prne',
+    'password': 'cisco123!',
+    'secret': 'class123!',  # Enable password
+}
+
+# File name to save the running configuration
+output_file = "running_config.txt"
+
+# Establish an SSH connection to the device
+try:
+    connection = ConnectHandler(**device)
+
+    # Enter enable mode
+    connection.enable()
+
+    # Change the hostname to "R1"
+    connection.send_config_set(['hostname R1'])
+
+    # Retrieve the running configuration
+    running_config = connection.send_command('show running-config')
+
+    # Display the running configuration
+    print("Running Configuration:\n")
+    print(running_config)
+
+    # Save the running configuration to a local file
+    with open(output_file, 'w') as file:
+        file.write(running_config)
+
+    print(f"--- Running configuration saved to {output_file}")
+
+    # Close the connection
+    connection.disconnect()
+
+    # Display a success message
+    print('------------------------------------------------------')
+    print('--- Success! Connected to: ', device['ip'])
+    print('--- Username: ', device['username'])
+    print('--- Hostname changed to R1')
+    print(f'--- Running configuration saved to {output_file}')
+    print('------------------------------------------------------')
+
+except Exception as e:
+    print(f"--- Failure! Could not connect to the device: {e}")
