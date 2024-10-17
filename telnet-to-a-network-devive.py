@@ -11,7 +11,7 @@ device = {
 }
 
 # Define variables
-new_hostname = "Hayes.Router"  # New hostname to set on the device
+new_hostname = "Jone'sRouter"  # New hostname to set on the device
 config_file = "running_config.txt"  # Local file to save the running configuration
 
 try:
@@ -21,7 +21,7 @@ try:
     # Enter enable mode
     connection.enable()
 
-    # Change the hostname to "Hayes'Router"
+    # Change the hostname to "Jone'sRouter"
     connection.send_config_set([f'hostname {new_hostname}'])
 
     # Verify the hostname change
