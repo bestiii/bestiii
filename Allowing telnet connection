@@ -72,7 +72,6 @@ else:
 
 # Display a final success message
 print("(------------------------------------------------------------------")
-print("")
 print(f"---               Success! Connecting to: {ip_address}")
 print(f"                                  Username: {username}")
 print(f"                                  Password: {password}")
