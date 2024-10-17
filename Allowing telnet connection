@@ -6,6 +6,7 @@ ip_address = "192.168.56.101"
 username = "cisco"
 password = "cisco123!"
 new_hostname = "IssaqM"  # Define the new hostname
+config_file = "running_config.txt"  # Local file to save the running configuration
 
 # Create telnet session
 session = pexpect.spawn("telnet " + ip_address, encoding="utf-8")
@@ -47,25 +48,27 @@ if result != 0:
 else:
     print(f"--- Success! Hostname changed to {new_hostname}")
 
-# Configure the device for Telnet access
-session.sendline("line vty 0 4")
-session.expect(["#", pexpect.TIMEOUT])
-session.sendline("password cisco123!")  # Set VTY password
-session.expect(["#", pexpect.TIMEOUT])
-session.sendline("login")  # Enable password checking for Telnet
-session.expect(["#", pexpect.TIMEOUT])
-session.sendline("transport input telnet")  # Allow Telnet connections
-result = session.expect(["#", pexpect.TIMEOUT])
-
-# Check if the Telnet configuration was successful
-if result != 0:
-    print("--- FAILURE! configuring Telnet access")
-else:
-    print("--- Success! Telnet access configured")
-
 # Exit configuration mode to return to privileged EXEC mode
 session.sendline("end")
 result = session.expect(["#", pexpect.TIMEOUT])
+
+# Send command to show the running configuration
+session.sendline("show running-config")
+result = session.expect(["#", pexpect.TIMEOUT], timeout=10)
+
+# Check if the command was successful
+if result != 0:
+    print("--- FAILURE! retrieving running configuration")
+else:
+    # Capture the output of the running configuration
+    running_config = session.before
+    # Display the running configuration
+    print("--- Running Configuration ---")
+    print(running_config)
+    # Save the output to a local file
+    with open(config_file, "w") as file:
+        file.write(running_config)
+    print(f"--- Success! Running configuration saved to {config_file}")
 
 # Display a final success message
 print("------------------------------------------------------")
@@ -74,5 +77,4 @@ print("--- Success! Connecting to:", ip_address)
 print("    Username:", username)
 print("    Password:", password)
 print(f"    New Hostname: {new_hostname}")
-print("--- Telnet access has been configured")
-print("------------------------------------------------------")
+print(f"    Running configuration
