@@ -1,0 +1,41 @@
+from netmiko import ConnectHandler
+
+# Define the device details
+device = {
+    'device_type': 'cisco_ios',  # Type of device (Cisco IOS)
+    'host': '192.168.56.101',    # IP address of the device
+    'username': 'prne',          # Username for SSH login
+    'password': 'cisco123!',     # Password for SSH login
+    'secret': 'class123!'        # Enable password
+}
+
+# Establish an SSH connection to the device
+try:
+    connection = ConnectHandler(**device)
+    print('--- SSH connection established successfully!')
+
+    # Enter enable mode
+    connection.enable()
+    print('--- Entered enable mode')
+
+    # Enter configuration mode and change the hostname
+    new_hostname = 'R1'  # Desired new hostname
+    connection.send_config_set([f'hostname {new_hostname}'])
+    print(f'--- Hostname changed to {new_hostname}')
+
+    # Exit configuration mode
+    connection.exit_config_mode()
+
+    # Verify the hostname change by getting the prompt
+    prompt = connection.find_prompt()
+    if new_hostname in prompt:
+        print(f'--- Success! Hostname is now {new_hostname}')
+    else:
+        print('--- Failure! Hostname change not successful')
+
+    # Disconnect the SSH session
+    connection.disconnect()
+    print('--- Disconnected from the device')
+
+except Exception as e:
+    print(f'--- Error occurred: {e}')
